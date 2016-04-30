@@ -1,0 +1,26 @@
+{
+  "name": "kusebauch/nette-new-relic-logger",
+  "description": "Logger decorator to New Relic for Netta Framework and Tracy",
+  "minimum-stability": "stable",
+  "license": "MIT-X11",
+  "authors": [
+    {
+      "name": "Patrick Kusebauch",
+      "email": "patrick.kusebauch@gmail.com"
+    }
+  ],
+  "require": {
+    "tracy/tracy": "*",
+    "nette/application": "*"
+  },
+  "require-dev": {
+    "codeception/codeception": "*",
+    "codeception/aspect-mock": "*",
+    "codeception/specify": "*",
+    "codeception/verify": "*",
+    "mockery/mockery": "*"
+  },
+  "autoload": {
+    "psr-4": {"Kusebauch\\NetteNewRelicLogger\\": "src/"}
+  }
+}
