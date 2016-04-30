@@ -16,8 +16,8 @@ $application = new Application();
 2) try to run anyway (will be problematic, if you don't have NewRelic agent installed)
 ```php
 $application = new Application();
-$application->onError[] = '\Kusebauch\NetteNewRelicLogger\onAppError';
-$application->onRequest[] = '\Kusebauch\NetteNewRelicLogger\onAppRequest';
+$application->onError[] = ['\Kusebauch\NetteNewRelicLogger\Utils', onAppError];
+$application->onRequest[] = ['\Kusebauch\NetteNewRelicLogger\Utils', onAppRequest];
 ```
 
 ## Logging application errors
