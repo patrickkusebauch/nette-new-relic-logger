@@ -1,6 +1,6 @@
 {
   "name": "kusebauch/nette-new-relic-logger",
-  "description": "Logger decorator to New Relic for Netta Framework and Tracy",
+  "description": "Logger decorator to New Relic for Nette Framework and Tracy",
   "minimum-stability": "stable",
   "license": "MIT-X11",
   "authors": [
