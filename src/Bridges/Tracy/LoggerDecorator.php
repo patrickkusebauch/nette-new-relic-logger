@@ -16,10 +16,10 @@ class LoggerDecorator implements ILogger
 	/** @var bool */
 	public $directory = true; // workaround https://github.com/nette/tracy/pull/74
 
-	/** @var callable($message, $priority):bool[] should the message be excluded from NewRelic? */
+	/** @var callable[] function($message, $priority):bool should the message be excluded from NewRelic? */
 	public $excludeMessageFunc = [];
 
-	/** @var callable($message, $priority):bool[] should the message be always logged to NewRelic? */
+	/** @var callable[] function($message, $priority):bool should the message be always logged to NewRelic? */
 	public $includeMessageFunc = [];
 
 	public function __construct(ILogger $oldLogger)

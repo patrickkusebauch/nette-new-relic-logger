@@ -2,10 +2,6 @@
 
 namespace Kusebauch\NetteNewRelicLogger;
 
-use Nette\Application\Application;
-use Nette\Application\BadRequestException;
-use Nette\Application\Request;
-
 //TODO - I would like to have all of those as just namespaced function, but I wasn't able to make them work as callbacks
 class Utils
 {
@@ -16,42 +12,38 @@ class Utils
 		return (bool) ini_get('newrelic.enabled') && $loaded;
 	}
 
-	public static function startsWith($haystack, $needle)
-	{
-		return (substr($haystack, 0, strlen($needle)) === $needle);
-	}
-
 	public static function noticeLoggerFilter($message, $priority)
 	{
 		if (is_array($message)) $message = implode(' ', $message);
 		if ($message instanceof \Exception) $message = $message->getMessage();
-		if(static::startsWith($message, "PHP Notice:")) return true;
-		return false;
+		return strpos($message, 'PHP Notice:') === 0;
 	}
 
 	public static function strictLoggerFilter($message, $priority)
 	{
 		if (is_array($message)) $message = implode(' ', $message);
 		if ($message instanceof \Exception) $message = $message->getMessage();
-		if(static::startsWith($message, "PHP Strict standards:")) return true;
-		return false;
+		return strpos($message, 'PHP Strict standards:') === 0;
 	}
 
-	public static function onAppError(Application $sender, \Exception $exception)
+	public static function onAppError(\Application $sender, \Exception $exception)
 	{
-		if ($exception instanceof BadRequestException) return; // skip
+		if ($exception instanceof \BadRequestException) return; // skip
 		newrelic_notice_error($exception->getMessage(), $exception);
 	}
 
-	public static function onAppRequest(Application $sender, Request $request)
+	public static function onAppRequest(\Application $sender, \PresenterRequest $request)
 	{
 		if (PHP_SAPI === 'cli') {
 			newrelic_name_transaction('$ ' . basename($_SERVER['argv'][0]) . ' ' . implode(' ', array_slice($_SERVER['argv'], 1)));
 			newrelic_background_job(true);
 			return;
 		}
-		$params = $request->getParameters();
-		newrelic_name_transaction($request->getPresenterName() . (isset($params['action']) ? ':' . $params['action'] : ''));
+
+		$params = $request->getParams();
+		$transactionName = $request->getPresenterName() . (array_key_exists('action', $params) ? ':' . $params['action'] : '');
+		if(array_key_exists('do', $params) && strrpos($params['do'], '-') === false) $transactionName .= '-' . $params['do'];
+		newrelic_name_transaction($transactionName);
 		if(strpos($request->getPresenterName(), 'Cron') !== false) newrelic_background_job(true);
 	}
 }

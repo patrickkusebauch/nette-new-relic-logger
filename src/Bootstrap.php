@@ -2,17 +2,15 @@
 
 namespace Kusebauch\NetteNewRelicLogger;
 
-use Nette\Application\Application;
-
 class Bootstrap
 {
 	protected static $running = false;
 
 	/**
 	 * @param $callable callable($message, $priority):bool
-	 * @param Application $application
+	 * @param \Application $application
 	 */
-	public static function addOnRequest($callable, Application $application)
+	public static function addOnRequest($callable, \Application $application)
 	{
 		if (!Utils::check()) return;
 		$application->onRequest[] = $callable;
@@ -20,9 +18,9 @@ class Bootstrap
 
 	/**
 	 * @param $callable callable($message, $priority):bool
-	 * @param Application $application
+	 * @param \Application $application
 	 */
-	public static function addOnError($callable, Application $application)
+	public static function addOnError($callable, \Application $application)
 	{
 		if (!Utils::check()) return;
 		$application->onError[] = $callable;
