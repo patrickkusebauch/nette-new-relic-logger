@@ -10,8 +10,7 @@
     }
   ],
   "require": {
-    "tracy/tracy": "*",
-    "nette/application": "*"
+    "tracy/tracy": "2.3.*",
   },
   "require-dev": {
     "codeception/codeception": "*",
