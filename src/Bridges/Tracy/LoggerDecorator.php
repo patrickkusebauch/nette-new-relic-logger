@@ -38,7 +38,7 @@ class LoggerDecorator implements ILogger
 
 		$forceLog = false;
 		foreach ($this->includeMessageFunc as $func) {
-			if($func($value, $priority) === true) {
+			if($func($value, $priority)) {
 				$forceLog = true;
 				break;
 			}
@@ -46,11 +46,11 @@ class LoggerDecorator implements ILogger
 
 		if($forceLog === false) {
 			foreach ($this->excludeMessageFunc as $func) {
-				if($func($value, $priority) === false) return $exceptionFile;
+				if($func($value, $priority)) return $exceptionFile;
 			}
 		}
 
-		if (is_array($value)) $value = implode(' ', $value);
+		if(is_array($value)) $value = implode(' ', $value);
 		if($value instanceof \Exception) {
 			newrelic_notice_error($value->getMessage(), $value);
 			return $exceptionFile;
