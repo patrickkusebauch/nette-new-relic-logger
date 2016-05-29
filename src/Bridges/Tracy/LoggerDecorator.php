@@ -37,20 +37,20 @@ class LoggerDecorator implements ILogger
 		$exceptionFile = $this->oldLogger->log($value, $priority);
 
 		$forceLog = false;
-		foreach ($this->includeMessageFunc as $func) {
-			if($func($value, $priority) === true) {
+		foreach($this->includeMessageFunc as $func) {
+			if($func($value, $priority)) {
 				$forceLog = true;
 				break;
 			}
 		}
 
 		if($forceLog === false) {
-			foreach ($this->excludeMessageFunc as $func) {
-				if($func($value, $priority) === false) return $exceptionFile;
+			foreach($this->excludeMessageFunc as $func) {
+				if($func($value, $priority)) return $exceptionFile;
 			}
 		}
 
-		if (is_array($value)) $value = implode(' ', $value);
+		if(is_array($value)) $value = implode(' ', $value);
 		if($value instanceof \Exception) {
 			newrelic_notice_error($value->getMessage(), $value);
 			return $exceptionFile;
