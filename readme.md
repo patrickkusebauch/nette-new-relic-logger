@@ -25,11 +25,11 @@ Create a decorator over the current Tracy logger. Your application will keep log
 
 ```php
 $oldLogger = \Tracy\Debugger::getLogger();
-$newLogger = \Kusebauch\NetteNewRelicLogger\Bridges\Tracy\LoggerDecorator($oldLogger);
+$newLogger = new \Kusebauch\NetteNewRelicLogger\Bridges\Tracy\LoggerDecorator($oldLogger);
 $newLogger->excludeMessageFunc[] = ['\Kusebauch\NetteNewRelicLogger\Utils', 'noticeLoggerFilter'];
 $newLogger->excludeMessageFunc[] = ['\Kusebauch\NetteNewRelicLogger\Utils', 'strictLoggerFilter'];
-$newLogger->includeMessageFunc[] = function ($message, $priority) { return in_array($priority, [
-    \Tracy\ILogger::CRITICAL, \Tracy\ILogger::ERROR, \Tracy\ILogger::EXCEPTION,
-]) ? true : false; };
+$newLogger->includeMessageFunc[] = function ($message, $priority) { 
+    return in_array($priority, [\Tracy\ILogger::CRITICAL, \Tracy\ILogger::ERROR, \Tracy\ILogger::EXCEPTION]);
+};
 \Tracy\Debugger::setLogger($newLogger);
 ```
